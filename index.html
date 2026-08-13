@@ -205,6 +205,102 @@ header{
   .reveal{opacity:1;transform:none}
   .marquee-track{animation:none}
 }
+
+/* MOBILE TYPOGRAPHY + MOTION FIX */
+@media(max-width:700px){
+  .hero{
+    min-height:auto;
+    padding-top:calc(112px + var(--safe-t));
+    padding-bottom:34px;
+  }
+  .hero-name{
+    font-size:clamp(3rem,17vw,5.1rem);
+    line-height:.82;
+    letter-spacing:-.07em;
+    max-width:100%;
+  }
+  .hero-name span{overflow:visible}
+  .hero-name i{will-change:transform,opacity}
+  .big{
+    font-size:clamp(2.7rem,13vw,4.8rem);
+    line-height:.9;
+    letter-spacing:-.055em;
+    overflow-wrap:anywhere;
+  }
+  .lead{
+    font-size:clamp(1.18rem,5.6vw,1.65rem);
+    line-height:1.25;
+  }
+  .hero-bottom p{
+    font-size:clamp(1.08rem,5vw,1.35rem);
+    line-height:1.28;
+  }
+  .project h3{
+    font-size:clamp(2.15rem,11vw,3.8rem);
+    line-height:.9;
+    letter-spacing:-.055em;
+    overflow-wrap:anywhere;
+  }
+  .exp-card h3{
+    font-size:clamp(1.8rem,9vw,3rem);
+    line-height:.95;
+    overflow-wrap:anywhere;
+  }
+  .contact h2{
+    font-size:clamp(3.5rem,17vw,5.8rem);
+    line-height:.77;
+    letter-spacing:-.07em;
+    overflow-wrap:anywhere;
+  }
+  .stack-tags span{font-size:clamp(1.05rem,5.8vw,1.7rem)}
+  .wrap{overflow:visible}
+  .reveal{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity .6s var(--ease),transform .6s var(--ease);
+  }
+  .reveal.in{opacity:1;transform:none}
+  .project,.exp-card,.stack-row{
+    transform:translateZ(0);
+    backface-visibility:hidden;
+  }
+}
+
+@media(max-width:390px){
+  :root{--pad:16px}
+  .hero-name{
+    font-size:clamp(2.8rem,16vw,4.4rem);
+    line-height:.84;
+  }
+  .big{font-size:clamp(2.5rem,12vw,4rem)}
+  .project h3{font-size:clamp(2rem,10.5vw,3.4rem)}
+  .contact h2{font-size:clamp(3.1rem,15.5vw,5rem)}
+  .eyebrow{font-size:.62rem;line-height:1.5}
+  .btn{min-height:36px;padding:0 10px;font-size:.58rem}
+}
+
+@media(max-width:340px){
+  :root{--pad:14px}
+  .hero-name{font-size:2.65rem;letter-spacing:-.06em}
+  .big{font-size:2.35rem}
+  .project h3{font-size:2rem}
+  .contact h2{font-size:2.9rem}
+}
+
+@media(max-width:700px) and (prefers-reduced-motion:no-preference){
+  .hero-name i{
+    opacity:0;
+    transform:translateY(70%);
+    animation:mobileRise .78s var(--ease) forwards;
+  }
+  .hero-name span:nth-child(2) i{animation-delay:.08s}
+  .hero-name span:nth-child(3) i{animation-delay:.16s}
+  @keyframes mobileRise{
+    to{opacity:1;transform:none}
+  }
+  .marquee-track{animation-duration:32s}
+}
+
 </style>
 </head>
 <body>
@@ -411,7 +507,7 @@ const saved=localStorage.getItem('tpa-theme');
 root.dataset.theme=saved||((matchMedia('(prefers-color-scheme:light)').matches)?'light':'dark');
 document.getElementById('themeBtn').onclick=()=>{root.dataset.theme=root.dataset.theme==='dark'?'light':'dark';localStorage.setItem('tpa-theme',root.dataset.theme)};
 
-const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');observer.unobserve(e.target)}}),{threshold:.12});
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');observer.unobserve(e.target)}}),{threshold:.05,rootMargin:'0px 0px -6% 0px'});
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;document.getElementById('progress').style.width=(h?scrollY/h*100:0)+'%'},{passive:true});
 
